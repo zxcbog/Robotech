@@ -12,7 +12,7 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-        (os.path.join('share', package_name, 'launch'), glob(os.path.join('launch', '*launch.[pxy][yma]*'))),
+        (os.path.join('share', package_name), glob('launch/*.launch.py')),
         (os.path.join('share', package_name), glob('rviz/*.rviz')),
     ],
     install_requires=['setuptools'],
@@ -24,9 +24,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'turtle_broadcaster = turtle_carrot.turtle_broadcaster:main',
-            'turtle_listener = turtle_carrot.turtle_listener:main',
-            'dynamic_frame_broadcaster = turtle_carrot.dynamic_frame_tf2_broadcaster:main',
+            'turtle_carrot = turtle_carrot.turtle_carrot:main',
+            'turtle_follower = turtle_carrot.turtle_follower:main',
         ],
     },
 )

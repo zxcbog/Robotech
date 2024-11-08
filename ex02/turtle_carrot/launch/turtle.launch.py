@@ -5,31 +5,38 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     return LaunchDescription([
-        DeclareLaunchArgument(
-            'radius',
-            default_value='1.0',
-            description='Radius of the carrot rotation around turtle1'
-        ),
-        DeclareLaunchArgument(
-            'direction_of_rotation',
-            default_value='1',
-            description='Direction of rotation: 1 for clockwise, -1 for counterclockwise'
+        Node(
+            package='turtlesim',
+            executable='turtlesim_node',
+            name='sim'
         ),
         Node(
             package='turtle_carrot',
-            executable='turtle_carrot',
-            name='turtle_carrot',
-            output='screen',
+            executable='turtle_broadcaster',
+            name='broadcaster1',
             parameters=[
-                {'radius': LaunchConfiguration('radius')},
-                {'direction_of_rotation': LaunchConfiguration('direction_of_rotation')}
+                {'turtlename': 'turtle1'}
+            ]
+        ),
+        DeclareLaunchArgument(
+            'target_frame', default_value='turtle1',
+            description='Target frame name.'
+        ),
+        Node(
+            package='turtle_carrot',
+            executable='turtle_broadcaster',
+            name='broadcaster2',
+            parameters=[
+                {'turtlename': 'turtle2'}
             ]
         ),
         Node(
             package='turtle_carrot',
-            executable='turtle_follower',
-            name='turtle_follower',
-            output='screen'
+            executable='turtle_listener',
+            name='listener',
+            parameters=[
+                {'target_frame': LaunchConfiguration('target_frame')}
+            ]
         ),
     ])
 
